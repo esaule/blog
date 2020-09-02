@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Review: Templar Battleforce"
+title:  "Review: Shadowrun Dragonfall"
 tags: [geek, en, video game]
 ---
 
