@@ -1,0 +1,81 @@
+---
+layout: post
+title:  "Que faire en cas de segmentation fault?"
+tags: [fr, geek, programming]
+---
+
+
+<h1>Que faire en cas de segmentation fault?</h1>
+
+<p>Bonjour a vous,</p>
+
+<p>Je recontre souvent des etudiants (locaux ou a travers internet) ou des debutants en programmation C. Ils posent souvent la question "J'obtiens segmentation fault. Qu'est ce que c'est? Que faire?".</p>
+
+<h3> Qu'est ce que "Segmentation fault"?</h3>
+
+<p>Il s'agit de l'erreur de l'on obtient en C lorsque le programme lis ou ecrit sur une partie de la memoire qui est protege en lecture ou en ecriture. Par protege, je veux dire que le systeme d'exploitation conserve une liste des adresses memoire sur lesquelles ont peut lire et sur lesquelles on peut ecrire. Ces zones sont appellees des segments. Il y a plusieurs raison pour laquelle un segment peut etre protege; le plus courant est que la zone memoire n'est pas allouee.</p>
+
+<p>Par exemple, les deux codes suivants atteignent certainement segmentation fault:</p>
+<pre>
+int * p = NULL;
+*p = 12;
+</pre>
+<p>ou encore</p>
+<pre>
+int* p = (int*) malloc (10*sizeof(int));
+for (int i=0; i<1000; ++i)
+  p[i] = 42;
+</pre>
+<p>Le premier code atteint segmentation fault parce que l'adresse 0 est toujours protege contre la lecture et l'ecriture. C'est une adresse qui est utilise par convention par les programmeurs pour signifier "nulle part, ca n'existe pas." Le second code atteint segmentation fault parcequ'il y a des ecriture bien apres la fin de l'espace memoire alloue: seulement 10 entiers ont ete alloues, mais 1000 sont ecrit. Certaiement bien apres la fin du tableau, on fini par rencontrer une adresse qui n'est pas allouee. C'est un depassement de tableau (en anglais, buffer overflow)</p>
+
+<p>"segmentation fault" est utilise par Linux. D'autre systeme d'exploitation ont d'autre message d'erreur. Certain BSD rapportent aussi des "bus error". Windows typiquement rapporte une erreur du type "le programme a ete arrete a cause d'un access illegal en memoire" ou un truc du genre (ca fait trop longtemps que je n'ai pas utilise windows pour me rappeller du message exacte.)</p>
+
+<h3>Que faire contre une "segmentation fault"?</h3>
+
+<p>La plupart des cours en ligne ou des programmeurs disent quelquechose du genre "Utilise un debugger!" Un debugger est un outils comme gdb qui sert a suivre l'execution d'un programme et a afficher les valeurs des variables d'un programme pendant que le programme fonctionne ou a posteriori. L'utilisation classique des debugger est de laisser le programmer planter et de regarder l'etat de la memoire apres l'erreur. Je ne conseille gdb qu'en dernier recours. Parcequ'un debugger va vous avertir d'une "segmentation fault" apres que l'erreur soit survenu. Mais souvent l'erreur est une consequence d'un probleme moins important qui est survenu plus tot dans l'execution du programme. C'est ce probleme la qu'il est important d'attrapper.</p>
+
+<p>Il y a quatre outils qui sont magique en C pour detecter les problemes tot.</p>
+
+<h3>Le compilateur</h3>
+
+<p>Les compilateurs sont votre premiere ligne de defense contre les erreurs. Le C est un langage assez permissif. Beaucoup de comportement incorrecte d'un programme peuvent etre detecter facilmenet pendant la compilation. Cependant comme le C est permissif beaucoup de ces comportement ne sont pas juger critique par votre compilateur et il en fait des warning, ou les passe sous silence. Dans mon experience, tous les warning d'un compilateur sont important. Activer tous les warning possible et imaginable et forcer le compilateur a les considerer comme des erreurs. Avec GCC, <strong>compilez votre code avec "-Wall -Wextra -Werror --std=c99"</strong>. Et corrigez tous les problemes. Ne les passez pas sous silence. Ne retirez pas ce -Werror pour faire taire le compilateur. Il est la pour vous aider.</p>
+
+<p>Quel type d'erreur le compilateur va relever qu'il ne n'indiquait pas avant:</p>
+<ul>
+<li>Une variable est declare mais pas utilise, en particulier dans les parametres de fonctions. Si une variable n'est pas utilisee, retirer la. Cela augmentera la lisibilite de votre programme. Si un parametre n'est pas utilise, probablement la fonctin ne fait pas ce qu'elle devrait faire. (Si c'est un des cas ou un parametre est ignore, il n'est pas obligatoire en C de nommer un parametre de fonction.)</li>
+<li>Une fonction n'est pas declare mais est utiliser. En C, il n'est pas obligatoire de declarer une fonction avant de l'utiliser. Si une fonction n'est pas declare, le C lui donne automatiquement la signature "int f (int)". Si vous passez autre chose qu'un int en parametre, le compilateur va convertir et certainement, vous obtiendrez un comportement non desire. Si la fonction ne retourne pas int, le probleme est encore pire, parcequ'il decale la pile d'appel.</li>
+<li>Une fonction qui retourne un parametre n'a pas de "return". En C, ce n'est pas une erreur. Mais certainement si la signature indique que quelquechose est retourne, il y a une raison. La fonction ne fait pas ce qu'elle doit faire.</li>
+<li>Une variable est utilisee sans etre initialisee. Le C ne donne pas de valeur par defaut au variable, une variable non initialise peut contenir n'importe quelle valeur. Certainement il s'agit d'une erreur qui n'apparaitera pas tout le temps.</li>
+</ul>
+
+<p> Il y a plein d'autre comportement dans le code qui ne sont pas rapporte par gcc comme une erreur, mais qui dans 99% des cas va generer une erreur a un moment ou un autre.</p>
+
+<h3>L'analyseur statique splint</h3>
+<p>splint est un programme d'analyse de code statique. Vous pouvez le trouver <a href="http://www.splint.org/">ici</a> ou dans le gestionnaire de paquet de votre distribution. splint analyse les fonction de votre code pour trouver des comportement problematique. Il peut detecter certaine fuite de memoire, des buffer overflows, ...</p>
+
+<p>Certaines annotations peuvent etre donne au code pour exprimer le sens des operations et permettre a splint de faire la difference entre un probleme potentiel et un comportement voulu. Utiliser splint demande d'ajouter pas mal de chose dans le code comme commentaire ou type cast. Mais le jeu en vaut la chandelle, cela force a ecrire du code plus propre, plus robuste et mieux documente.</p>
+
+<h3>Un verificateur de memoire a l'execution: valgrind</h3>
+<p><a href="http://valgrind.org/">valgrind</a> est un outil d'analyse dynamique de programme (certainement disponible dans le gestionnaire de paquet de votre distribution). Basiquement c'est un emulateur x86 et x86-64 qui traque l'etat de la memoire. Il permet de detecter de nombreuse erreur a l'execution qui ne sont pas detectable statiquement. Par exemple, un tableau peut etre partiellement initialise: les indices pairs sont initialise, mais pas les indices impair. Un analyseur statique ne pourra pas faire la difference dnas la majorite des cas. valgrind conserver l'information pour chaque octet de la memoire: est ce que cette zone memoire est initialise ou non?. Ainsi, valrind permet de detecter des erreurs qui viennent de l'utilisation de memoire non initialise.</p>
+
+<p>valgrind conserve egalement l'information "quelles sont les zones de memoire alloues?". Cela permet de detecter les fuites de memoires. A la fin de l'execution du programme valgrind rapporte combien de memoire est toujours alloue. Il rapporte egalement si certaineszone de memoire ne sont plus accessible: c'est a dire des zones de memoire vers lesquels le programme n'a plus de pointeur. De facon generale, une fuite de memoire doit etre considerer comme une erreur. Meme si le systeme va recuperer la memoire allouee a la fin de son execution, la presence de fuite de memoire denote un probleme de conception dans le logiciel.</p>
+
+<p>Parcequ'il conserve toutes les zones de memoire alloue, valgrind peut pour chaque acces a la memoire verifier si cette acces est dans une zone alloue ou non. Il reportera tous les acces memoire qui ne sont pas normaux. Ces access sont souvent effectue avant une segfault. Dans certains cas, bien avant et ils sont le probleme qui cause une segfault incomprehensible. En effet, cela vient principalement du fonctionnement de malloc. Deux appels consecutifs a malloc retournent souvent des zone memoire proche. Donc si il y a un depassement de tableau, le programme va ecrire sur la prochaine zone memoire alloue. Si la zone memoire ecrite contient un pointeur, lorsque ce pointeur sera dereference plus tard, une segfault apparaitra. Un debugger ne vera pas le depassement de buffer, il ne vera que le dereferencement de pointeur. Et l'erreur paraitra incomprehensible. valgrind typiquement detecte ce genre d'erreur. En effet, malloc typiquement utilise de la memoire entre deux zones allouees pour sa gestion interne. Cet espace memoire est considere par valgrind comme etant innaccessible et il previendra si cette espace est utilise.</p>
+
+<p>Compilez le code avec -g. Executez "valgrind ./programme parametre1 parametre2".</p>
+
+<h3>Une barriere electrique: Electric Fence</h3>
+<p><a href="http://elinux.org/Electric_Fence">efence</a> est une bibliotheque ecrit par <a href="http://perens.com/">Bruce Perens</a> pour debugger du code C. Basiquement, efence utilise des fonctions systemes pour entourer les allocations de memoire d'un large segment de memoire protege en lecture et ecriture. Ainsi tous les acces memoire qui depasse une zone alloue (d'un cote ou de l'autre) va entrainer une segmentation fault. Ici le but est d'obtenir une erreur des le premier access "douteux" a la memoire.</p>
+
+<p>efence fourni des protection similaire a valgrind. Cependant il se complete bien. valgrind est un logiciel qui est lent par nature, efence fonctionne a vitesse reel. valgrind detecte plus d'erreur (fuite memoire et memoire non initialise.). Bref, les deux se completent.</p>
+
+<h3>En resume</h3>
+<p>Lorsque vous avez une segmentation fault, assurez vous toujours d'avoir au moins verifier ces choses la:</p>
+<ul>
+<li>Est ce que le code est compile avec avec toutes les verifications possibles? Le compilateur previent il de quoi que ce soit? Si oui, corrigez ceci d'abords.</li>
+<li>Est ce que je peux utiliser un analyseur de code statique, comme splint, pour assurer la qualite de mon programme?</li>
+<li>Quel est la premiere erreur reporte par valgrind?</li>
+<li>Y a t'il une fuite de memoire?</li>
+<li>Quel est le premier acces memoire invalide reporte par efence?</li>
+</ul>
+<p>Ces choses sont faciles a verifier et la vraie source d'erreur dans la majorite des cas. Utilisez les!</p>

@@ -1,0 +1,135 @@
+---
+layout: post
+title:  "The best AI for cassis"
+tags: [geek, en, programming]
+---
+
+
+<h1>The best AI for cassis</h1>
+
+<p>Hi folks,</p>
+
+<p>The AI I had written for <a href="http://erik.deblan.org/blog/index.php?article10/releasing-cassis-v0-9">Cassis</a> were pretty bad. They were basically either playing randomly or just trying not to die. I was debatting on how to build the best AI for that game. I gave myself the goal of putting that AI running on a phone. There are only 6 points and 15 possible move possible at the first round. Here I present the simple techniques I used to reach this goal. I wrote everything with on my laptop first and then ported it to my android phone. I published version 0.91 of <a href="data/documents/cassis/cassis-release.apk">cassis for android</a>.</p>
+
+<h3>The basics.</h3>
+
+<p>The AI is working on a brute force basis. Basically, it considers all the possible moves up to the end of the game and play the best. To see if this is feasible, I started by trying to decide whether player 1 wins or loses. So I wrote the simplest code which recursively expand all moves:</p>
+
+<pre>bool player1wins(Game g)
+{
+  if (g.gameover()) return g.winner() == PLAYER1;
+  
+  if (g.whoseturn() == PLAYER1) {
+    for (edge e = 0; e != 15; ++e) {
+      if (g.edge(e) != NOT_PLAYED_YET) continue;
+      Game g2 = g;
+      g2.play(e);
+      if (player1wins(g2)) return true;
+    }
+    return false; //could not find a winning move. That means player 1 lost.
+  }
+  else
+    //pretty much the same thing with player2
+}</pre>
+
+<p>The code is pretty straight forward, if it is player 1's turn, it tries all the possible move and stops if it finds a winning one. The code for player 2 is the same as for player 1 except it stops if it find a losing move for player 1. I let it run for about 15 minutes on my laptop and it did not complete. Clearly I was doing something wrong. Let's do a little bit of maths. At the first iteration there are 15 possible moves, at the second one 14 possible move, then 13, ... Overall, there are 15! case to examine. That's about 1.3 x 10^12 combination. If the code can examine 1 combination per clock cycle (which it does not) and the processor runs at 1GHz, it will still take 1300 seconds (20 minutes). Provided it definitely need more that 1 clock cycle per combination, that is definitely not a working approach. It will never run fine on a phone.</p>
+
+<h3>Hashing based.</h3>
+
+<p>The main problem with that approach is that it processes the same combination multiple times. If the first moves are Player1/Edge1, Player2/Edge2, Player1/Edge3, the code will compute these combination even if it  processed Player1/Edge3, Player2/Edge2, Player1/Edge1 before, despite they are actually the very same board. If the former is winning then the latter is winning too and vice versa (same goes with losing). If we can remember every board we processed so far, we will process less of them. Let's do some math first here, for each edge of the graph, it can be either played by 1, by 2 or not played yet. So each edge can have 3 different states, and there are 15 edges in the game. So there are at most 3^15 possible boards, that about 14 million boards. (Actually there are less possible board since some board are not reachable because a player lost first and the game stopped. but let's use that number as a worst case scenario.) That is not too many board so that seems like a reasonnable thing to try.</p>
+
+<p>To be able to leverage that number, I need a simple way of naming a board. Otherwise, I would need to go through the list of all the board seen so far to decide whether I need to process it of not. That would give a quadratic algorithm and 14 million squared does not seem reasonnable anymore. Instead I can just store the boards in a table and annotate them winning or losing. If I have a simple way of building an offset from a board, then, I can just use that. Fortunately, the state of a board can be encoded with a number of 15 digit in base 3. Each digit represents an edge and is worth 0 for unplayed, 1 for played by player 1, and 2 for played by player 2. Actually, I would rather not allocate a table of size 14 millions (that won't work well on a phone), so I choose to use an associative data structure instead such as a hash map (actually, the code use std::map to be precise, so that's a red-black tree. but a hashmap would work the same (probably better actually)). And since I am going with hashing, I can directly make one hash map for each round since if two boards are in a different round they are clearly different. The code now looks like that:</p>
+
+<pre>bool player1wins(Game g)
+{
+  if (g.gameover()) return g.winner() == PLAYER1;
+
+  if (HASH[g.round()].exist(g.hash())) return HASH[g.round()][g.hash()];
+  
+  if (g.whoseturn() == PLAYER1) {
+    for (edge e = 0; e != 15; ++e) {
+      if (g.edge(e) != NOT_PLAYED_YET) continue;
+      Game g2 = g;
+      g2.play(e);
+      if (player1wins(g2)) {
+        HASH[g.round()][g.hash()] = true;
+        return true;
+      }
+    }
+    HASH[g.round()][g.hash()] = false;
+    return false; //could not find a winning move. That means player 1 lost.
+  }
+  else
+    //pretty much the same thing with player2
+}</pre>
+
+<p>With this approach, it takes about 1.65 seconds on my laptop to decide whether player 1 wins or not. And the size of the hashes are distributed like this:</p>
+<pre>
+winning[0].size() == 1
+winning[1].size() == 15
+winning[2].size() == 15
+winning[3].size() == 104
+winning[4].size() == 217
+winning[5].size() == 969
+winning[6].size() == 2693
+winning[7].size() == 6896
+winning[8].size() == 14560
+winning[9].size() == 21724
+winning[10].size() == 27754
+winning[11].size() == 21757
+winning[12].size() == 12826
+winning[13].size() == 2433
+winning[14].size() == 132
+</pre>
+
+<p>That represents 112096 state to store. Note that it is much lower than the 3^15 that were predicted, because some of the exploration stops early once player find a winning move. Yet 112K states are a lot to store, and generating them still takes 1.65 seconds on a laptop. A phone will be slower.</p>
+
+<h3>Isomorphism.</h3>
+
+<p>So what is the problem with that version? Well, we are not exploiting any kind of symetry. Look at the number of state evaluated at round 1: "winning[1].size() == 15". There are 15 of them. It means that the algorithm is trying all the first move possible. But all these moves are actually the same move up to a permutation of the vertices. In that case the board are said to be isomorph. The idea is then to store only one permutation for each board. Reaching one permutation per board might be a little complicated to do, so I will settle for storing less permutation. One thing that is constant for all the permutation of a board is the "degree" of the vertices. What I mean by degree is the number of edges connected to a given vertex. I introduce the notion of normal form of a board, which is a permutation of the board where the vertices of high degree are first. For the purpose of computing the hash value of a board, I first normalize the board and then compute its hash value. That way all the move at level 1 (and many more) are detected as equivalent. When running that variant of the code now takes  0.084939 seconds, with a total of 3173 different boards traversed and the distribution of values is now:</p>
+<pre>
+winning[0].size() == 1
+winning[1].size() == 1
+winning[2].size() == 1
+winning[3].size() == 5
+winning[4].size() == 7
+winning[5].size() == 39
+winning[6].size() == 70
+winning[7].size() == 194
+winning[8].size() == 347
+winning[9].size() == 557
+winning[10].size() == 703
+winning[11].size() == 660
+winning[12].size() == 442
+winning[13].size() == 136
+winning[14].size() == 10
+</pre>
+
+<p>Actually, we can prune a little more by differenciating for each vertex the number of incident edges from player 1 and from player 2. It reduces the time to 0.052072 seconds, 1568 different boards and the distribution is:</p>
+<pre>
+winning[0].size() == 1
+winning[1].size() == 1
+winning[2].size() == 1
+winning[3].size() == 5
+winning[4].size() == 7
+winning[5].size() == 28
+winning[6].size() == 48
+winning[7].size() == 119
+winning[8].size() == 207
+winning[9].size() == 313
+winning[10].size() == 353
+winning[11].size() == 278
+winning[12].size() == 168
+winning[13].size() == 37
+winning[14].size() == 2
+</pre>
+
+<h3>Reconstructing the move.</h3>
+
+<p>Alright, that is enough for me, less than 2K states and about 50 milliseconds in total on my laptop. Though, it only gives us which board is winning and which one is losing. We need to know what to play. So when a move of  player 1 leads to a win (for player 1), or when a move of player 2 leads to a lose (for player 1), we need to record the move. One of the proble is that we no longer evaluate every single reachable state. Only the ones that were not considered similar. So we need to compute the permutation to the normal form, and permute the move properly. However, this is not enough because two state that have the same normal form might not have derived state that have the same normal form. (It is not easy to find an example, but it has something to do with the sorting operation and the fact that two isomorph board can have the same representative.)</p>
+
+<h3>What else?</h3>
+
+<p>I guess there are more things to do, but it is fast on my phone right now. The code on the phone is actually using a stupid data structure in place of a std::map or an hash map, just a simple array. (There is no STL that works on android and supports exception.) Most of the performance to gain probably come from language details now and that's not really fun to do. So I'll stop my optimization there. There are more things to do on cassis though, probably adding a simpler difficulty mode, adding a proper icon for the game and adding a 2 player mode.</p>
+
+<p>In the mean time, can you beat my new IA? Here is a link to the <a href="data/documents/cassis/cassis-release.apk">apk</a> file for android. The code has been updated on <a href="https://github.com/esaule/cassis">github</a>.</p>
