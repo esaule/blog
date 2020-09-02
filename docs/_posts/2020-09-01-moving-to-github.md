@@ -14,4 +14,6 @@ easier, write in markdown and your done.
 We lose the comments, but the spam was so bad anyway that I stopped
 publishing comments and there were over 10000 waiting for moderation.
 
-So, welcome here.
+So, welcome here!
+
+I'll be recollecting some reviews I wrote here and there to populate this a little bit.
