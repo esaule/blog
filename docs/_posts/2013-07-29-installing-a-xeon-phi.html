@@ -1,0 +1,30 @@
+---
+layout: post
+title:  "Installing a Xeon Phi coprocessor on Debian Squeeze"
+tags: [en, programming, geek]
+---
+
+<h1>Installing a Xeon Phi coprocessor on Debian Squeeze</h1>
+
+<p>Today I installed a <a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-phi-detail.html">Xeon Phi</a> coprocessor in a Debian box. The software is only supported for Red Hat systems so I was a little bit afraid. Fortunately it was easy. I took most of my information from the <a href="http://registrationcenter.intel.com/irc_nas/3047/readme-en.txt">readme</a> files of mpssd and from <a href="http://www.poempelfox.de/blog/2013/03/06/">that guy</a>. Thanks to him because he did most of the job.</p>
+
+<p>Ok, let's get started. Hardware wise, you need a 16x PCI-express 3.0 slot and you need the BIOS to be configured to be compatible with devices with more than 4GB of ressource. There was a NVIDIA K20 with 6GB of memory plugged on the machine I used; but still the BIOS complained. A simple BIOS configuration allowed the machine boot. (Check the BIOS configuration under PCI-express.)</p> 
+
+<p>From here I did everything as root. Get the MPSS archive from <a href="http://software.intel.com/en-us/articles/intel-manycore-platform-software-stack-mpss-archive">Intel's website</a>. (Mine was called <em>mpss_gold_update_3-2.1.6720-15-rhel-6.3.tar</em>). Untar it with <em>tar xvf mpss_gold_update_*.tar</em>. You'll get a bunch of RPM files. Install alien if you do not already have it with <em>aptitude install alien</em>. Convert all the RPM files except the -kmod- one into DEB files with <em>for file in `ls *.rpm | grep -v kmod` ; do alien --scripts $file; done</em>. Install them all with <em>for file in `ls *.deb | grep -v kmod`;do dpkg --install $file; done</em>.</p>
+<p>Up to now, we installed all the files you need beside the kernel module. The kernel module that is provided is only for Red Hat system (with a kernel 2.6.32). My machine had a kernel 2.6.39, so I needed to do a little bit more work. Fortunately, the source for the kernel are available in the src/ directory. Convert that RPM file into a tgz with alien: <em>alien -t intel-mic-kmod-*.src.rpm</em>. When you uncompress it with <em>tar zxvf intel-mic-kmod-*tgz</em> you get a .spec file you do not care about and a tar.bz2 file that contain the kernel module source code. Uncompress it with <em>tar jxvf intel-mic-kmod-*.tar.bz2</em>. Compile it with <em>make</em> and install it with <em>make install</em>. You should now have a kernel module in <em>/lib/modules/`uname -a`/extra/mic.ko</em>. Somehow, the installation script does not run depmod to declare the module so you need to run it manually with <em>depmod</em>.</p>
+
+<p>To use a Xeon Phi you also need a service running on the host. The files are already installed, but there is no startup script for the service. Go to <em>/etc/init.d</em>. We will use the skeleton script as a base. <em>cp skeleton mpssd</em>. You need to edit that file and perform the following modifications. Change the 3rd line to <em>Provides: mpssd</em>. Change line 22 to <em>DESC="MIC service deamon"</em>. Change line 23 to <em>NAME=mpssd</em>. Comment line 25, you don't need arguments. At the beginning of function <em>do_start</em>, add the following line <em>modprobe mic; [ -d "/var/lock/subsys" ] || mkdir /var/lock/subsys</em>. The first part makes sure the mic kernel module is loaded. That should not be necessary because a udev rule was added earlier, but somehow I needed it. The second part ensures that the directory used by mpssd to store its lock file is properly created. Save and quit. Add the proper permission to the startup script  with <em>chmod +x mpssd</em>. And at that point the service can be started with <em>service mpssd start</em>. Starting and stopping the service takes time (about a minute).</p>
+
+<p>Now you need to be able to use the card. Typically one logs on the card using ssh. The card automatically takes the private IP address <em>172.31.1.1</em> but it is not routable automatically from linux. So you need to add a network interface in <em>/etc/network/interfaces</em>:</p>
+
+<pre>iface mic0 inet static
+  address 172.31.1.254
+  netmask 255.255.255.0</pre>
+
+<p>Load the interface with <em>ifup mic0</em>. To log on the card, you will need to ssh to the card using key-based autentification. If you have local users to the machine (I do not think that NIS based ones are supported with that technique), you should make sure that you have an ssh key on the ones that want to use the MIC card. If not, just get them to run <em>ssh-keygen</em>. After that, you need to load the ssh keys on the MIC card but mpssd need to be off to do that. Just running <em>service stop mpssd; micctrl --resetconfig; service start mpssd</em> should do the trick. I am not sure at which point, but an entry to <em>/etc/hosts</em> was made. So <em>ssh mic0</em> should just work; otherwise <em>ssh 172.31.1.1</em>.</p>
+
+<p>From there you are pretty much all set as you have a working installation of your Xeon Phi. You will certainly need ICC to do anything useful. Some people mount the host filesystem on the device, which can be pretty useful. I won't cover these because they are not really Debian specific and other people will certainly explain these better than me. NFS mounting is explained in MPSS <a href="http://mirror.osc.edu/mirror/mic/readme-en.txt">readme file</a> but I haven't tested it.</p>
+
+<p>Happy hacking</p>
+
+<p>EDIT on 2014/01/28: it seems that to use the offload mode, one need to have proper permission on <em>/dev/mic/*</em>. You can edit the udev rule in <em>/etc/udev/rules.d/50-udev-scif.rules</em>.</p>
