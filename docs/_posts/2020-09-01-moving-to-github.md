@@ -1,3 +1,8 @@
+---
+layout: post
+title:  "Welcome to GitHub Pages!"
+---
+
 # Migrating to GitHub
 
 After being hosted by deblan for a while, I realized I stopped
