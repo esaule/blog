@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Welcome to GitHub Pages!"
+tags: some thing
 ---
 
 # Migrating to GitHub
