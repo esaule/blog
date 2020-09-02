@@ -1,0 +1,151 @@
+---
+layout: post
+title:  "Quand les conteneurs standards deviennent trop lents"
+tags: [geek, programming, fr]
+date: 2009-11-08 20:00
+---
+
+<h1>Quand les conteneurs standards deviennent trop lents</h1>
+
+<p>Aujourd'hui j'ai envie de parler d'optimisation de code et plus
+précisément d'un cas particulier qui m'est arrivé lors de l'écriture
+de <a href="http://godrik.mandragor.org/~erik/Qix-website"> QixDS
+</a>. Pour résumer : des balles se déplacent dans l'écran et le
+joueur fait apparaître des murs afin d'enfermer les balles dans un
+espace le plus restreint possible.</p>
+
+<p>Lorsque le joueur fait apparaître un mur, le jeu vérifie si une
+zone de l'écran ne contient aucune balle. Si une telle zone existe, le
+jeu la rempli entièrement. Le code responsable de cette
+fonctionnalité était relativement lent. En fait, il faisait baisser le
+framerate. L'algorithme qui fait cela est un algorithme de recherche
+de composante connexe dans un graphe qui ressemble basiquement à:</p>
+
+<pre>
+Pile&nbsp;p;
+Marque&nbsp;=&nbsp;false;
+Case&nbsp;c&nbsp;=&nbsp;(x,y);
+p.empiler&nbsp;();
+Marque[c]&nbsp;=&nbsp;true;
+
+Tant&nbsp;que&nbsp;(!&nbsp;p.vide())
+{
+&nbsp;&nbsp;Case&nbsp;c&nbsp;=&nbsp;p.depiler();
+&nbsp;&nbsp;Pour&nbsp;chaque&nbsp;voisin&nbsp;v&nbsp;de&nbsp;c
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;Si&nbsp;(Marque[c]&nbsp;==&nbsp;false&nbsp;ET&nbsp;!&nbsp;c.estUnMur())
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p.empiler(c);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marque[c]=true;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;}
+}
+</pre>
+
+<p>On peut voir que ce code est intensif sur la Pile. Dans
+  l'implémentation lente, la pile était std::stack de la STL. La stack
+  de la STL est implementée au dessus d'une deque. Je me suis dit que
+  la deque de la STL se redimensionne automatiquement et que donc elle
+  fait des vérifications d'accès à chaque insertion qui sont
+  superflues. En l'occurence, je sais que le nombre maximal d'objets
+  qui seront dans la pile est inférieur aux nombres de cases dans mon
+  jeu. Ce nombre étant petit par rapport à la taille de la mémoire, je
+  peux allouer toute la mémoire une bonne fois pour toute et supprimer
+  toutes les vérifications d'accès à la pile.</p>
+
+<p>J'ai donc remplacé la pile de la STL par une pile <em>ad hoc</em>
+  qui alloue la mémoire que demande le programmeur à la construction
+  et qui ne fait pas de vérifications sur les bornes du tableau. En
+  effet, si le programmeur fait une utilisation correcte de la pile,
+  ces vérifications sont inutiles.</p>
+
+<p>Quand je raconte ça, les gens sont toujours un petit peu
+  sceptique. Je fournis donc aujourd'hui des tests montrant qu'une
+  telle implémentation est plus rapide que celle (plus générique) de
+  la STL. Le code de test
+  est <a href="data/documents/STLtest/STLtest.tgz">disponible</a>. Basiquement,
+  il s'agit d'empiler 2<sup>28</sup> entiers ( soit 268 millions
+  d'entiers ) sur la pile en garantissant que la pile sera toujours de
+  taille inférieur à 28.</p>
+
+<p>Quatre implémentations différentes sont maintenant
+  présentées. Tout d'abord
+  <a href="data/documents/STLtest/stltest/StlStack.cpp">
+  StlStack </a> est l'implémentation utilisant std::stack de la
+  STL. <a href="data/documents/STLtest/stltest/Pile.cpp"> Pile </a> est
+  l'implémentation décrite précédemment : la mémoire est allouée à la
+  création de l'objet et aucune vérification n'est faite a
+  posteriori. <a href="data/documents/STLtest/stltest/PileSafe.cpp">
+  PileSafe </a> ajoute les vérifications de bornes sur le tableau (un
+  test par accès à la structure en plus par rapport à
+  Pile). Finalement, <a href="data/documents/STLtest/stltest/PileTemplate.cpp">
+  PileTemplate </a> connaît la taille du tableau à la compilation et
+  retire ainsi l'allocation dynamique de la mémoire du tableau et,
+  ainsi, une indirection.</p>
+
+<p>Les quatre implémentations sont testées sur 4 machines différentes
+  (Merci chris_27 et dargor pour les tests). Les quatre machines
+  utilisent g++ et le code est compilé en -O2 -DNDEBUG. Les mesures de
+  temps sont faites avec time. Une seule mesure de temps est fournie
+  par test mais les valeurs sont cohérente d'un run à l'autre. Les
+  résultats sont présentés dans le tableau ci-dessous:</p>
+
+<table>
+  <tr>Machine<td></td><td>ThinkPad</td><td>Tarsonis</td><td>EEEbox
+      B202</td><td>Aspire One</td></tr>
+
+  <tr><td>Processeur</td><td>Intel(R) Core(TM)2 Duo CPU T7500 @
+  2.20GHz
+</td><td>Genuine Intel(R) CPU T2130 @ 1.86GHz</td><td>Intel(R)
+Atom(TM) CPU N270 @ 1.60GHz
+</td><td>Intel(R) Atom(TM) CPU N270 @ 1.60GHz ("GenuineIntel"
+      686-class) 1.60 GHz (downclocked to 800Mhz )</td></tr>
+
+  <tr><td>Compilateur</td><td>g++ (Debian 4.3.2-1.1) 4.3.2</td><td>g++
+  (Debian 4.3.4-6) 4.3.4</td><td>g++ (Debian 4.3.2-1.1)
+  4.3.2</td><td>g++ (GCC) 3.3.5 (propolice)</td></tr>
+
+  <tr><td>StlStack</td><td>2.14s</td><td>15.56s</td><td>14.24s</td><td>22.01s</td></tr>
+
+  <tr><td>Pile</td><td>1.42s</td><td>7.34s</td><td>8.19s</td><td>11.47s</td></tr>
+
+  <tr><td>PileSafe</td><td>1.40s</td><td>6.48s</td><td>11.88s</td><td>15.65s</td></tr>
+
+  <tr><td>PileTemplate</td><td>1.44s</td><td>7.66s</td><td>8.51s</td><td>8.33s</td></tr>
+</table>
+
+<p>Les résultats montrent que l'implémentation manuelle Pile sans
+vérifications est toujours plus rapide que l'implémentation de la STL
+  (de 25% à 50% en fonction de la machine).</p>
+
+<p>La comparaison de Pile, PileSafe et PileTemplate est par contre
+  plus étonnante. On s'attendrait à ce que PileTemplate soit plus
+  rapide que Pile (puisqu'il y a une indirection de moins dans
+  PileTemplate). Et que Pile soit plus rapide que PileSafe (puisqu'il
+  y a un test en plus dans PileSafe). Cependant sur ThinkPad
+  et Tarsonis, PileSafe est l'implémentation la plus rapide et
+  PileTemplate est l'implémentation la plus lente (les temps de calcul
+  sur ThinkPad sont faibles mais l'ordre ne change pas si on augmente
+  le nombre de calcul). En revanche, PileSafe est plus lent que Pile
+  sur EEEboxB202 et AspireOne. PileTemplate est sensiblement plus
+  rapide que Pile sur AspireOne et légèrement plus lent sur
+  EEEboxB202.</p>
+
+<p>D'où viennent ces différences de performances ? Est-ce que l'ordre
+  est correct sur les machines EEEboxB202 et AspireOne parce qu'ils
+  utilisent des processeur Atom et que les processeurs plus classiques
+  de ThinkPad et Tarsonis ont des optimisations internes plus erratique
+  ? Les résultats de AspireOne correspondent à nos attentes mais ont
+  été obtenus sur une ancienne version de gcc. Est ce que les nouvelles
+  versions de gcc lissent les différences ?</p>
+
+<p>Finalement, PileSafe obtient de meilleurs résultats que
+  l'implémentation de la STL. On aurait attendu que les deux
+  implémentations aient à peu près les mêmes performances. Cela semble
+  indiquer que l'implémentation de la STL fournit une fonctionnalité
+  supplémentaire. Dans tous les cas, il semble clair que reimplémenter
+  des structures de données pour un cas particulier peut améliorer
+  les performances d'un programme. Les différences peuvent ne pas
+  sembler très probantes sur des processeurs efficaces comme les
+  dernières générations d'Intel, mais elles ont clairement fait la
+  différence sur ARM9 dans QixDS.</p>
