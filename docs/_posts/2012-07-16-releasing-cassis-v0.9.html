@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "Releasing Cassis v0.9"
+tags: [programming, en geek]
+---
+
+<h1>Releasing Cassis v0.9</h1>
+
+<p>Hello everybody,</p>
+
+<p>My first post in english will be dedicated to my first release of Cassis. Cassis is a two-player game that is based on graph theory. Six points are displayed on the screen. Each player at his/her turn adds an edge between two of the points. The first player who makes a triangle with his/her own color loses.</p>
+
+<p>I am releasing Cassis for the Android platform (Android 2.3+ required). You will find <a href="data/documents/cassis/cassis-release.apk">here</a> a link to the apk file to install. Cassis is released under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GPLv3 license</a>. The source code (C++) is available on <a href="https://github.com/esaule/cassis">github</a>. In the source code, you will also find a version for Linux that I used as a prototype. I can post a binary for debian squeeze if needed.</p>
+
+<p>The Android version is fully written in C++. There is no java code involved. This is made possible by the use of the NDK and the NativeActivity interface. I actually developped Cassis as a first look into C++ programming for Android. You will most likely not be able to compile the apk by yourself since it depends on two external libraries that are not included: <a href="https://github.com/anoek/android-cairo/">android-cairo</a> and <a href="https://github.com/julienr/libpng-android">libpng-android</a>. I will post later some more development informations.</p>
+
+<p>Cassis is in version 0.9 because there are many things I still want to do:<ul>
+<li>Separate cairo and libpng as a shared library (does any body knows how to do that?)</li>
+<li>A two-player mode</li>
+<li>Two more level of difficulty</li>
+<li>A proper icon</li>
+</ul></p>
+
+<p>Have fun.</p>
+
+<p>Screenshot: <img src="data/documents/cassis/cassis-screenshot.png" alt="screenshot" />.</p>
