@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Stair project is finally done!"
-tags: [woodworking, house, en]
+tags: [woodworking, house, en, 3617mylife]
 ---
 
 # My stairs are finally done!
