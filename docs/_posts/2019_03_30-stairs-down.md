@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Stair project is finally done!"
-tags: [woodworking, en]
+tags: [woodworking, house, en]
 ---
 
 # My stairs are finally done!
@@ -70,5 +70,8 @@ week ends when nothing more urgent needed to be done.
 If I had to do some more work on the stairs, I'd change the 90 degree
 turn and use proper wood rather than the plywood that was under the
 carpet.
+
+I learnt in the process that I liked working with wood. Eventually
+turned out that I'll do some more woodworking!
 
 (I had taken more pictures, if I find them, I'll add them back here.)
