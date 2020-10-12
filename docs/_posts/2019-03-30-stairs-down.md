@@ -11,7 +11,7 @@ nasty carpet on it. We had removed carpet from upstairs and there was
 only carpet on the stairs. So we decided to strip the carpet and
 refinish the stairs.
 
-It took forever to get the job done becasue it was a lot more work than I though.
+It took forever to get the job done because it was a lot more work than I though.
 
 The carpet was removed back in August 2017 right after we bought the
 house.
