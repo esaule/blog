@@ -72,14 +72,29 @@ I thought, it is a piece that will sit in the garage. So I could
 either not care about the finishing. Or I could use that as a way to
 experiment with finishing. Since I'll see the workbench about
 everyday, I went for painting the frame and staining the surfaces with
-a dark stain. Because I am an idiot, I should have finished the frame
-and the slats BEFORE gluing the slats in place. So I got bad memories
-from the [staircase refinishing project]( {{ site.baseurl }}{% link
-_posts/2019-03-30-stairs-done.md %} ).
+a dark stain. 
+
+![staining workbench](/blog/data/documents/woodworking/2020-08-workbench/20200904_212005.jpg ) 
+
+
+Because I am an idiot, I should have finished the frame and the slats
+BEFORE gluing the slats in place. So I got bad memories from the
+[staircase refinishing project]( {{ site.baseurl }}{% link
+_posts/2019-03-30-stairs-done.md %} ). Look at all the painter tape I
+needed to protect the flat surfaces:
+
+![painting workbench](/blog/data/documents/woodworking/2020-08-workbench/20200906_200407.jpg )
+
 
 But in the end it looks great! That third coat of poly on the top made
 the whole difference. I think that could be the most intricate project
 I have done so far. And also the nicest looking one. It's kind of a
 shame it is going to sit in the garage...
+
+![finished workbench](/blog/data/documents/woodworking/2020-08-workbench/20200907_110647_HDR.jpg ) 
+
+
+![finished workbench](/blog/data/documents/woodworking/2020-08-workbench/20200907_110656.jpg ) 
+
 
 In the future, maybe I'll attach a vice to the side. We'll see with usage.
