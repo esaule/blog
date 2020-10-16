@@ -77,7 +77,9 @@ and the slats BEFORE gluing the slats in place. So I got bad memories
 from the [staircase refinishing project]( {{ site.baseurl }}{% link
 _posts/2019-03-30-stairs-done.md %} ).
 
-But in the end it looks great! That thrid coat of poly on the top made
+But in the end it looks great! That third coat of poly on the top made
 the whole difference. I think that could be the most intricate project
 I have done so far. And also the nicest looking one. It's kind of a
 shame it is going to sit in the garage...
+
+In the future, maybe I'll attach a vice to the side. We'll see with usage.
