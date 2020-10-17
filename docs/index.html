@@ -8,8 +8,10 @@ layout: index
 
   {% assign count = 1 %}
   {% for post in site.posts  %}
-    {% if count < 10 %}
-	<h3>      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> </h3>
+    {% if count < site.indexsize %}
+		  <h3>      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>  </h3>
+
+		  <small>on {{ post.date | date: "%-d %B %Y" }}</small>
 	{{ post.excerpt }}
 
 	<a href="{{ site.baseurl }}{{ post.url }}">... see the whole post.</a>
