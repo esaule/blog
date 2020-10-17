@@ -63,22 +63,22 @@ Tant&nbsp;que&nbsp;(!&nbsp;p.vide())
   sceptique. Je fournis donc aujourd'hui des tests montrant qu'une
   telle implémentation est plus rapide que celle (plus générique) de
   la STL. Le code de test
-  est <a href="/blog/data/documents/STLtest/STLtest.tgz">disponible</a>. Basiquement,
+  est <a href="{{site.baseurl}}/data/documents/STLtest/STLtest.tgz">disponible</a>. Basiquement,
   il s'agit d'empiler 2<sup>28</sup> entiers ( soit 268 millions
   d'entiers ) sur la pile en garantissant que la pile sera toujours de
   taille inférieur à 28.</p>
 
 <p>Quatre implémentations différentes sont maintenant
   présentées. Tout d'abord
-  <a href="/blog/data/documents/STLtest/stltest/StlStack.cpp">
+  <a href="{{site.baseurl}}/data/documents/STLtest/stltest/StlStack.cpp">
   StlStack </a> est l'implémentation utilisant std::stack de la
-  STL. <a href="/blog/data/documents/STLtest/stltest/Pile.cpp"> Pile </a> est
+  STL. <a href="{{site.baseurl}}/data/documents/STLtest/stltest/Pile.cpp"> Pile </a> est
   l'implémentation décrite précédemment : la mémoire est allouée à la
   création de l'objet et aucune vérification n'est faite a
-  posteriori. <a href="/blog/data/documents/STLtest/stltest/PileSafe.cpp">
+  posteriori. <a href="{{site.baseurl}}/data/documents/STLtest/stltest/PileSafe.cpp">
   PileSafe </a> ajoute les vérifications de bornes sur le tableau (un
   test par accès à la structure en plus par rapport à
-  Pile). Finalement, <a href="/blog/data/documents/STLtest/stltest/PileTemplate.cpp">
+  Pile). Finalement, <a href="{{site.baseurl}}/data/documents/STLtest/stltest/PileTemplate.cpp">
   PileTemplate </a> connaît la taille du tableau à la compilation et
   retire ainsi l'allocation dynamique de la mémoire du tableau et,
   ainsi, une indirection.</p>

@@ -14,10 +14,10 @@ The whole thing is painted with chalk paint with a clear protective
 coat. Some shots:
 
 
-![Shelving unit](/blog/data/documents/woodworking/2020-07-shelving-unit/20200706_141614.jpg )
+![Shelving unit]({{site.baseurl}}/data/documents/woodworking/2020-07-shelving-unit/20200706_141614.jpg )
 
-![Shelving unit](/blog/data/documents/woodworking/2020-07-shelving-unit/20200706_141633.jpg )
+![Shelving unit]({{site.baseurl}}/data/documents/woodworking/2020-07-shelving-unit/20200706_141633.jpg )
 
-![Shelving unit](/blog/data/documents/woodworking/2020-07-shelving-unit/20200706_141643.jpg )
+![Shelving unit]({{site.baseurl}}/data/documents/woodworking/2020-07-shelving-unit/20200706_141643.jpg )
 
 I like it! And I learned a lot building it.

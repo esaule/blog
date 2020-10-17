@@ -6,7 +6,7 @@ tags: [en, programming, geek]
 
 
 
-<p>Today I installed a <a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-phi-detail.html">Xeon Phi</a> coprocessor in a Debian box. The software is only supported for Red Hat systems so I was a little bit afraid. Fortunately it was easy. I took most of my information from the <a href="http://registrationcenter.intel.com/irc_nas/3047/readme-en.txt">readme</a> files of mpssd and from <a href="http://www.poempelfox.de/blog/2013/03/06/">that guy</a>. Thanks to him because he did most of the job.</p>
+<p>Today I installed a <a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-phi-detail.html">Xeon Phi</a> coprocessor in a Debian box. The software is only supported for Red Hat systems so I was a little bit afraid. Fortunately it was easy. I took most of my information from the <a href="http://registrationcenter.intel.com/irc_nas/3047/readme-en.txt">readme</a> files of mpssd and from <a href="http://www.poempelfox.de{{site.baseurl}}/2013/03/06/">that guy</a>. Thanks to him because he did most of the job.</p>
 
 <p>Ok, let's get started. Hardware wise, you need a 16x PCI-express 3.0 slot and you need the BIOS to be configured to be compatible with devices with more than 4GB of ressource. There was a NVIDIA K20 with 6GB of memory plugged on the machine I used; but still the BIOS complained. A simple BIOS configuration allowed the machine boot. (Check the BIOS configuration under PCI-express.)</p> 
 

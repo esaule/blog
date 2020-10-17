@@ -9,7 +9,7 @@ tags: [geek, en, programming]
 
 <p>Hi folks,</p>
 
-<p>The AI I had written for <a href="http://erik.deblan.org/blog/index.php?article10/releasing-cassis-v0-9">Cassis</a> were pretty bad. They were basically either playing randomly or just trying not to die. I was debatting on how to build the best AI for that game. I gave myself the goal of putting that AI running on a phone. There are only 6 points and 15 possible move possible at the first round. Here I present the simple techniques I used to reach this goal. I wrote everything with on my laptop first and then ported it to my android phone. I published version 0.91 of <a href="/blog/data/documents/cassis/cassis-release.apk">cassis for android</a>.</p>
+<p>The AI I had written for <a href="http://erik.deblan.org{{site.baseurl}}/index.php?article10/releasing-cassis-v0-9">Cassis</a> were pretty bad. They were basically either playing randomly or just trying not to die. I was debatting on how to build the best AI for that game. I gave myself the goal of putting that AI running on a phone. There are only 6 points and 15 possible move possible at the first round. Here I present the simple techniques I used to reach this goal. I wrote everything with on my laptop first and then ported it to my android phone. I published version 0.91 of <a href="{{site.baseurl}}/data/documents/cassis/cassis-release.apk">cassis for android</a>.</p>
 
 <h3>The basics.</h3>
 
@@ -132,4 +132,4 @@ winning[14].size() == 2
 
 <p>I guess there are more things to do, but it is fast on my phone right now. The code on the phone is actually using a stupid data structure in place of a std::map or an hash map, just a simple array. (There is no STL that works on android and supports exception.) Most of the performance to gain probably come from language details now and that's not really fun to do. So I'll stop my optimization there. There are more things to do on cassis though, probably adding a simpler difficulty mode, adding a proper icon for the game and adding a 2 player mode.</p>
 
-<p>In the mean time, can you beat my new IA? Here is a link to the <a href="/blog/data/documents/cassis/cassis-release.apk">apk</a> file for android. The code has been updated on <a href="https://github.com/esaule/cassis">github</a>.</p>
+<p>In the mean time, can you beat my new IA? Here is a link to the <a href="{{site.baseurl}}/data/documents/cassis/cassis-release.apk">apk</a> file for android. The code has been updated on <a href="https://github.com/esaule/cassis">github</a>.</p>

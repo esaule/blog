@@ -42,7 +42,7 @@ Here is what they looked like in January 2019 after applying stain to
 one tread to see how it goes. Note all the patching that necessary on
 the rise, there was just as much on the treads, it is just VERY sanded.
 
-![January 2019: trying out stain](/blog/data/documents/woodworking/2019-03-stairs/20190108_195218.jpg)
+![January 2019: trying out stain]({{site.baseurl}}/data/documents/woodworking/2019-03-stairs/20190108_195218.jpg)
 
 Staining all the tread was done in February 2019. The next step was
 painting the rise and the trim. But before painting there was a need
@@ -53,13 +53,13 @@ day.
 
 Here is what the stairs looked like once the rise and trim were painted:
 
-![Mid March 2019: painting the rise and trim](/blog/data/documents/woodworking/2019-03-stairs/20190323_132835.jpg)
+![Mid March 2019: painting the rise and trim]({{site.baseurl}}/data/documents/woodworking/2019-03-stairs/20190323_132835.jpg)
 
 After painting the rail (and setting and removing tape) here is what it finally looked like.
 
-![End of March 2019: Finally done: bottom of the stairs](/blog/data/documents/woodworking/2019-03-stairs/20190330_220254.jpg)
-![End of March 2019: Finally done: side view](/blog/data/documents/woodworking/2019-03-stairs/20190330_220305.jpg)
-![End of March 2019: Finally done: top of the stairs](/blog/data/documents/woodworking/2019-03-stairs/20190330_220322.jpg)
+![End of March 2019: Finally done: bottom of the stairs]({{site.baseurl}}/data/documents/woodworking/2019-03-stairs/20190330_220254.jpg)
+![End of March 2019: Finally done: side view]({{site.baseurl}}/data/documents/woodworking/2019-03-stairs/20190330_220305.jpg)
+![End of March 2019: Finally done: top of the stairs]({{site.baseurl}}/data/documents/woodworking/2019-03-stairs/20190330_220322.jpg)
 
 
 So overall, there was about 20 days of work on the stairs. Of course,
