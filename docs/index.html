@@ -1,25 +1,24 @@
 ---
-# front matter tells Jekyll to process Liquid
+layout: index
 ---
 
-<h1>Dr Saule in the US</h1>
+
 
 <ul>
-  {% for post in site.posts %}
-    <li>
-      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-    </li>
+
+  {% assign count = 1 %}
+  {% for post in site.posts  %}
+    {% if count < 10 %}
+	<h3>      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> </h3>
+	{{ post.excerpt }}
+
+	<a href="{{ site.baseurl }}{{ post.url }}">... see the whole post.</a>
+
+    {% assign count = count | plus:1  %}
+    {% endif %}
   {% endfor %}
 </ul>
 
+See all posts: <a href="allposts.html">here</a>
 
-<h2> by tags </h2>
 
-{% for tag in site.tags %}
-  <h3>{{ tag[0] }}</h3>
-  <ul>
-    {% for post in tag[1] %}
-      <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
-{% endfor %}
