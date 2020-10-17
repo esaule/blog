@@ -4,7 +4,7 @@ title:  "Painting the retention wall"
 tags: [woodworking, house, en, 3617mylife]
 ---
 
-# Painting the retention wall
+
 
 My house in on a slope, so they had to dig to plane the ground when
 the house was built. So there is wall that hold the soil out of where the dig was.

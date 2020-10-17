@@ -4,7 +4,7 @@ title:  "Making a cutting board"
 tags: [woodworking, house, en, 3617mylife]
 ---
 
-# Making a cutting board
+
 
 Had some scrap wood after the bookshelf. I made a cutting board
 

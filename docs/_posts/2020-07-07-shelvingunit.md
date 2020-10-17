@@ -4,7 +4,7 @@ title:  "Making a piece of furniture"
 tags: [woodworking, house, en, 3617mylife]
 ---
 
-# Making a piece of furniture
+
 
 My wife needed a shelving unit. So I deployed all my 2x4 processing
 skills to build a piece of furniture. Used a lot of dado and rabbet to

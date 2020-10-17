@@ -4,7 +4,7 @@ title:  "Review: Templar Battleforce"
 tags: [geek, en, video game]
 ---
 
-# Review: Templar Battleforce
+
 
 For reference, I just beat the campaign for the first time (I played in normal). I usually like turn by turn strategy and tactical games like civilization, fire emblem, shining force, ...
 

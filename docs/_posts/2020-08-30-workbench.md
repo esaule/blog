@@ -4,7 +4,7 @@ title:  "Workbench"
 tags: [woodworking, house, en, 3617mylife]
 ---
 
-# Workbench
+
 
 After building the shelving unit, I realized I was in dire need of a
 workbench to work in my garage. I lack a work surface to work

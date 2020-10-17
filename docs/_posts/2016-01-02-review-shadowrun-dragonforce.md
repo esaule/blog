@@ -4,7 +4,7 @@ title:  "Review: Shadowrun Dragonfall"
 tags: [geek, en, video game]
 ---
 
-# Review: Shadowrun Dragonfall
+
 
 I am a long time player of tabletop RPGs and tactical RPGs and I must say that I loved this game. I just finished the game for the first time in Hard difficulty and I plan on playing it again in the highest difficulty next. The game is the second in a serie of (currently 3) but I feel like the stories are disconnected so you probably can play them in any order.
 

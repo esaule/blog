@@ -6,7 +6,7 @@ tags: [geek, en, video game]
 
 
 
-# Review: NEXT JUMP: Shmup Tactics 
+
 
 NEXT JUMP: Shmup Tactics is a weird game.It is a shooting game (think galaga, r-type, ikaruga) that you play turn by turn.
 

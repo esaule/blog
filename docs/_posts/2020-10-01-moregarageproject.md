@@ -1,10 +1,10 @@
 ---
-#layout: post
+
 title:  "More garage projects"
 tags: [woodworking, house, en, 3617mylife]
 ---
 
-# More Garage Projects
+
 
 The workbench was a good improvement in the garage for when I
 work. But there is a need to improve the garage when it is not being

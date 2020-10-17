@@ -5,7 +5,7 @@ tags: [geek, en, video game]
 ---
 
 
-# Review: A bird Story
+
 
 This is not really a game. This is a story, with a little bit of gameplay here and there to get you to do something, in the graphical style of 80's JRPGs.
 

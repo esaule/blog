@@ -4,7 +4,7 @@ title:  "Stair project is finally done!"
 tags: [woodworking, house, en, 3617mylife]
 ---
 
-# My stairs are finally done!
+
 
 My stairs were looking like crap when we got the house. There was a
 nasty carpet on it. We had removed carpet from upstairs and there was

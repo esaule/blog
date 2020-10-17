@@ -5,7 +5,7 @@ tags: [geek, en, video game]
 ---
 
 
-#Review: Celestian Tales Old North
+
 
 I play about 1 JRPG every 3 year to avoid the overload of "save the world" stories. I paid the game about 5 bucks, and clearly I got my money worth. Is it the best JRPG out there? No! But it is entertaining.
 
