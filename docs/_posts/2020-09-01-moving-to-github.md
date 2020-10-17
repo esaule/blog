@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Welcome to GitHub Pages!"
 tags: [geek, en]
 ---

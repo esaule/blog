@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Making a cutting board"
 tags: [woodworking, house, en, 3617mylife]
 ---

@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Review: Templar Battleforce"
 tags: [geek, en, video game]
 ---

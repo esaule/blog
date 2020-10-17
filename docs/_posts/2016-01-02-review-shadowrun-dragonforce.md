@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Review: Shadowrun Dragonfall"
 tags: [geek, en, video game]
 ---

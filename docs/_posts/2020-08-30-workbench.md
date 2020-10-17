@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Workbench"
 tags: [woodworking, house, en, 3617mylife]
 ---

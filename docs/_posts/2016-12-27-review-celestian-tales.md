@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Review: Celestian Tales Old North"
 tags: [geek, en, video game]
 ---

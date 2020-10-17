@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Review: NEXT JUMP: Shmup Tactics "
 tags: [geek, en, video game]
 ---

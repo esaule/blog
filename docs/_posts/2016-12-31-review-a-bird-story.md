@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Review: A Bird Story"
 tags: [geek, en, video game]
 ---

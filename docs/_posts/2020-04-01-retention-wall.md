@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Painting the retention wall"
 tags: [woodworking, house, en, 3617mylife]
 ---

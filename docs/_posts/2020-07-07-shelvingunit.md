@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title:  "Making a piece of furniture"
 tags: [woodworking, house, en, 3617mylife]
 ---
