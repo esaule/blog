@@ -1,0 +1,29 @@
+---
+---
+
+
+@import "{{ site.theme }}";
+
+
+
+.outer {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    justify-content: start;
+}
+
+.inner {
+    padding-left: .5em;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.context {
+    margin-left: .5em;
+    margin-right: .5em;
+    grid-column: 2;
+}
+
+header a {
+    color: #fff;
+}
