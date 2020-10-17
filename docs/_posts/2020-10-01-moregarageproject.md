@@ -1,5 +1,5 @@
 ---
-layout: post
+#layout: post
 title:  "More garage projects"
 tags: [woodworking, house, en, 3617mylife]
 ---

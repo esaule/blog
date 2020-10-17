@@ -1,4 +1,10 @@
-#theme: jekyll-theme-slate
 baseurl: /blog
 
+
 theme: jekyll-theme-slate
+
+author: erik
+
+title: "Dr Saule in the US"
+github:
+  is_project_page: false
