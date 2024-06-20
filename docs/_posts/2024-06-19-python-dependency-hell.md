@@ -68,7 +68,7 @@ these particular versions of the pacakges so that your production and
 dev environments are synchronized. You can do that with `pip install
 -r requirements.txt`.
 
-## python interpretor hell
+## Python interpretor hell
 
 I set all the pacakges in the same version as in production, let's run the code again... and I get:
 
@@ -129,7 +129,7 @@ Everything seems in order! I should now be able to rebuild the virtual
 environment for that particular project.
 
 
-## rebuilding env
+## Rebuilding env
 
 ```bash
 $ cd $project
@@ -160,9 +160,11 @@ $ pip install -r requirements.txt
 
 (Assuming python is in the same place. Or one can recompile python in the user account somewhere)
 
-## so what's the problem?
+## So... What's the problem again?
 
-Well, now I have another problem. The application runs in my testing environemnt but not in production. What's going on? I bet I ran out of disk space. Did I run out of disk space?
+Well, now I have another problem. The application runs in my testing
+environemnt but not in production. What's going on? I bet I ran out of
+disk space. Did I run out of disk space?
 
 ```bash
 $ ssh prodserver
