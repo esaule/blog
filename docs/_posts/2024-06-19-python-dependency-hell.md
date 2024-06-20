@@ -92,7 +92,7 @@ can't find it.)
 https://ruan.dev/blog/2022/06/23/install-a-specific-python-version-on-ubuntu
 ) has a run down on how to do that. It is done in a bit of a stupid
 way because it install to system wide instead of installing in `/opt`
-or something. Why `/opt`? check [FHS](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard )
+or something. Why `/opt`? check [FHS](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard )!
 
 ```bash
 $ sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python3-openssl git # to install dependencies
@@ -125,4 +125,50 @@ Type "help", "copyright", "credits" or "license" for more information.
 pip 21.1.1 from /home/erik/foobar/something/lib/python3.8/site-packages/pip (python 3.8)
 ```
 
-Everything seems in order!
+Everything seems in order! I should now be able to rebuild the virtual
+environment for that particular project.
+
+
+## rebuilding env
+
+```bash
+$ cd $project
+$ rm -rf myvenv/ #remove previous environment
+$ /opt/python-3.8.10/bin/python3 -m venv myvenv #recreate environemnt against python 3.8
+$ . ./myvenv/bin/activate
+$ pip install Flask==1.1.2 #reinstall packages
+$ pip install Jinja2==2.10.1
+$ pip install MarkupSafe==1.1.0 Werkzeug==1.0.1
+```
+
+And after a couple more missing packages, I can finally run the flask
+app. It runs. I try the route that killed it. And... that works too.
+
+So now I can generate the requirements.txt with:
+
+```bash
+$ pip freeze > requirements.txt
+```
+
+So in a production environment you should be able to do:
+
+```bash
+$ /opt/python-3.8.10/bin/python3 -m venv myvenv #recreate environemnt against python 3.8
+$ . ./myenv/bin/activate
+$ pip install -r requirements.txt
+```
+
+(Assuming python is in the same place. Or one can recompile python in the user account somewhere)
+
+## so what's the problem?
+
+Well, now I have another problem. The application runs in my testing environemnt but not in production. What's going on? I bet I ran out of disk space. Did I run out of disk space?
+
+```bash
+$ ssh prodserver
+$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        49G   49G     0 100% /
+```
+
+Yep...
