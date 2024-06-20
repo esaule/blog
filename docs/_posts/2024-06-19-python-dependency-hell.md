@@ -62,7 +62,7 @@ $ pip install wget==3.2
 ```
 
 The point of it is that you'll eventually can generate a list of
-precise requirements once you get teh code working with `pip freeze >
+precise requirements once you get the code working with `pip freeze >
 requirements.txt`. So that in production environment you can install
 these particular versions of the pacakges so that your production and
 dev environments are synchronized. You can do that with `pip install
@@ -70,7 +70,11 @@ dev environments are synchronized. You can do that with `pip install
 
 ## Python interpretor hell
 
-I set all the pacakges in the same version as in production, let's run the code again... and I get:
+I set all the pacakges in the same version as in production. I can
+know which versions of the packages are currently installed in
+production because they are listed in `pip list`. After forcing each
+package that block the run one by one, I can finally run the code
+again... and I get:
 
 ```ImportError: cannot import name 'Mapping' from 'collections' (/usr/lib/python3.10/collections/__init__.py)```
 
