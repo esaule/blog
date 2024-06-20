@@ -49,9 +49,14 @@ Then in your session (and in each of your terminal sessions), you would activate
 $ . ./myvenv/bin/activate
 ```
 
-and from there, you have an empty python environment. so anything you do is from a clean slate. So you can install packages or force a particular package version with pip pretty easily:
+I've been told you should upgrade pip first
+
 ```bash
 $ pip install --upgrade pip
+```
+
+and from there, you have an empty python environment. so anything you do is from a clean slate. So you can install packages or force a particular package version with pip pretty easily:
+```bash
 $ pip install Flask==1.1.2
 $ pip install wget==3.2
 ```
@@ -62,3 +67,62 @@ requirements.txt`. So that in production environment you can install
 these particular versions of the pacakges so that your production and
 dev environments are synchronized. You can do that with `pip install
 -r requirements.txt`.
+
+## python interpretor hell
+
+I set all the pacakges in the same version as in production, let's run the code again... and I get:
+
+```ImportError: cannot import name 'Mapping' from 'collections' (/usr/lib/python3.10/collections/__init__.py)```
+
+And this is where, I descend into insanity. No one seems to care in
+the python team about backwards compatibility. What happens is that my
+linux distribution has a python 3.10 installed but when the code was
+developped the interpretor was in version 3.8. and in between these two versions, the name of the object hs changed (as noted in [this stack overflow post](https://stackoverflow.com/questions/69381312/importerror-cannot-import-name-from-collections-using-python-3-10 ) ).
+
+So now, I only have two options. 1. Try to upgrade an application that
+as far as I know doesn't work to python 3.10 with dependencies and
+all. 2. Or install an old version of python. And rebuild the
+environment against that. Let's do that. (Somewhere on the web, we
+find people saying you can do that with simply `pip install
+python==3.8` but that doesn't work for me, and search the pip website
+for python returns a bazillion match. so if it has changed name, I
+can't find it.)
+
+[This blog post](
+https://ruan.dev/blog/2022/06/23/install-a-specific-python-version-on-ubuntu
+) has a run down on how to do that. It is done in a bit of a stupid
+way because it install to system wide instead of installing in `/opt`
+or something. Why `/opt`? check [FHS](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard )
+
+```bash
+$ sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python3-openssl git # to install dependencies
+$ cd ~/prgs # I do all my local compilations in ~/prgs/
+$ wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tgz
+$ tar -xvf Python-3.8.10.tgz
+$ cd Python-3.8.10/
+$ ./configure --enable-optimizations --prefix=/opt/python-3.8.10 # --prefix let's you chose where the software install, /opt is for the things you install yourself (essentially)
+$ make -j 12 # -j 12 uses 12 processes to compile which somehow is not default in make
+$ sudo make install
+```
+
+We can check that it worked by creating a BS environment somewhere:
+
+```bash
+$ mkdir ~/foobar
+$ cd ~/foobar
+$ /opt/python-3.8.10/bin/python3.8 -m venv something
+$ . ./something/bin/activate
+(something) $ which python
+/home/erik/foobar/something/bin/python
+(something) $ python3
+Python 3.8.10 (default, Jun 19 2024, 20:28:04) 
+[GCC 11.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+(something) $ which pip
+/home/erik/foobar/something/bin/pip
+(something) $ pip --version
+pip 21.1.1 from /home/erik/foobar/something/lib/python3.8/site-packages/pip (python 3.8)
+```
+
+Everything seems in order!
