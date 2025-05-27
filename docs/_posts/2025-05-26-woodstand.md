@@ -4,7 +4,6 @@ title:  "Making wood stands"
 tags: [woodworking, house, en, 3617mylife]
 ---
 
-## Goals
 
 I wanted to make two stands made of wood for two different
 purpose. One was to elevate my desktop computer so that it does not
