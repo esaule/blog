@@ -11,7 +11,7 @@ over the years, but never that extensive and I have written one in a
 while. Which one was the last? _checking_ Next Jump: Shmup Tactics? In
 2018? Ok, that was a while back!
 
-I play the game on the Nintendo Switch, I think it is the DLC included
+I played the game on the Nintendo Switch, I think it is the DLC included
 release of the PS4 game, which itself was an extension of "Catherine"
 on the PS3.
 
