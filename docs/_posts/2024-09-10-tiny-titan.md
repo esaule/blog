@@ -1,7 +1,7 @@
 ---
 
 title:  "Making a tiny titan case"
-tags: [woodworking, work, en, 3617mylife]
+tags: [woodworking, work, en, 3617mylife, geek]
 ---
 
 So we have this project at work where we want to have a cluster of
@@ -184,3 +184,6 @@ would think. It's warm, not hot. I do wonder whether there are power
 bricks that have many output lines rather than having a brick for each
 device. That would make the build much easier to manage. Overall, that
 was pretty fun! I'd build another one!
+
+Now, it's time to find a real name for the cluster, and to deploy
+applications on it!
