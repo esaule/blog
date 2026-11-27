@@ -16,7 +16,7 @@ The plan is simple:
 4. Use a commercial monitor arms
 
 
-![here we go]({{site.baseurl}}/data/documents/woodworking/IMG_20260207_223801044.jpg)
+![here we go]({{site.baseurl}}/data/documents/woodworking/2026-02-screen-mount/IMG_20260207_223801044.jpg)
 
 That was EASY! Turns out when you built a dozen stuff like that before, doing two that look decent isn't too hard.
 
@@ -24,4 +24,4 @@ If you are wondering the commercial monitor arms is the one from [suptek](https:
 
 But once put together, it really helps. Ok it is still a mess! But not as much!
 
-![here we go]({{site.baseurl}}/data/documents/woodworking/IMG_20260207_230254155.jpg)
+![here we go]({{site.baseurl}}/data/documents/woodworking/2026-02-screen-mount/IMG_20260207_230254155.jpg)
