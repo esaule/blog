@@ -6,8 +6,7 @@ tags: [woodworking, house, en, 3617mylife]
 
 Oh no! What did I do!?
 
-My wife liked the [office storage unit]({%
-post_url2026-05-20-office-storage %})). And now she wants me to build
+My wife liked the [office storage unit]({% post_url 2026-05-20-office-storage %})). And now she wants me to build
 stuff. That's how hell starts, isn't it?
 
 She needs utility cart to put streaming gear and to put stuff on
